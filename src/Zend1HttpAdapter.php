@@ -56,6 +56,9 @@ class Zend1HttpAdapter extends AbstractHttpAdapter
                 'httpversion'  => $internalRequest->getProtocolVersion(),
                 'timeout'      => $this->getConfiguration()->getTimeout(),
                 'maxredirects' => 0,
+                'ssl'          => array(
+                    'allow_self_signed' => !$this->getConfiguration()->getSslVerifyPeer()
+                )
             ))
             ->setUri($url = (string) $internalRequest->getUrl())
             ->setMethod($internalRequest->getMethod())

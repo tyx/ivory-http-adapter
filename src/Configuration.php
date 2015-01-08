@@ -48,6 +48,9 @@ class Configuration implements ConfigurationInterface
     /** @var string */
     private $userAgent;
 
+    /** @var boolean */
+    private $sslVerifyPeer;
+
     /**
      * Creates an http adapter.
      *
@@ -66,6 +69,7 @@ class Configuration implements ConfigurationInterface
         $this->setEventDispatcher($eventDispatcher);
         $this->setBoundary(sha1(microtime()));
         $this->setUserAgent('Ivory Http Adapter '.HttpAdapterInterface::VERSION);
+        $this->setSslVerifyPeer(true);
     }
 
     /**
@@ -234,5 +238,21 @@ class Configuration implements ConfigurationInterface
     public function getBaseUrl()
     {
         return $this->messageFactory->getBaseUrl();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setSslVerifyPeer($verify)
+    {
+        $this->sslVerifyPeer = $verify;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSslVerifyPeer()
+    {
+        return $this->sslVerifyPeer;
     }
 }

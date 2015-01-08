@@ -124,6 +124,9 @@ class CurlHttpAdapter extends AbstractCurlHttpAdapter
         curl_setopt($curl, CURLOPT_HEADER, true);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_HTTPHEADER, $this->prepareHeaders($internalRequest, false, false));
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, $this->getConfiguration()->getSslVerifyPeer());
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, $this->getConfiguration()->getSslVerifyPeer() ? 2 : 0);
+
 
         $this->configureTimeout($curl, 'CURLOPT_TIMEOUT');
         $this->configureTimeout($curl, 'CURLOPT_CONNECTTIMEOUT');

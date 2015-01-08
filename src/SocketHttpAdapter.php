@@ -40,11 +40,19 @@ class SocketHttpAdapter extends AbstractHttpAdapter
     {
         list($protocol, $host, $port, $path) = $this->parseUrl($url = (string) $internalRequest->getUrl());
 
+        $contextOptions = array(
+            'allow_self_signed' => !$this->getConfiguration()->getSslVerifyPeer(),
+        );
+
+        $context = stream_context_create(array(), $contextOptions);
+
         $socket = @stream_socket_client(
             $protocol.'://'.$host.':'.$port,
             $errno,
             $errstr,
-            $this->getConfiguration()->getTimeout()
+            $this->getConfiguration()->getTimeout(),
+            STREAM_CLIENT_CONNECT,
+            $context
         );
 
         if ($socket === false) {

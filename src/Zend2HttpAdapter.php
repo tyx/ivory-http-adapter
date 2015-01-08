@@ -55,9 +55,10 @@ class Zend2HttpAdapter extends AbstractHttpAdapter
         $this->client
             ->resetParameters(true)
             ->setOptions(array(
-                'httpversion'  => $internalRequest->getProtocolVersion(),
-                'timeout'      => $this->getConfiguration()->getTimeout(),
-                'maxredirects' => 0,
+                'httpversion'        => $internalRequest->getProtocolVersion(),
+                'timeout'            => $this->getConfiguration()->getTimeout(),
+                'maxredirects'       => 0,
+                'sslallowselfsigned' => array(!$this->getConfiguration()->getSslVerifyPeer())
             ))
             ->setUri($url = (string) $internalRequest->getUrl())
             ->setMethod($internalRequest->getMethod())

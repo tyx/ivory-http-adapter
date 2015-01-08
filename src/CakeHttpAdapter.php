@@ -52,6 +52,7 @@ class CakeHttpAdapter extends AbstractHttpAdapter
     protected function doSendInternalRequest(InternalRequestInterface $internalRequest)
     {
         $this->httpSocket->config['timeout'] = $this->getConfiguration()->getTimeout();
+        $this->httpSocket->config['ssl_allow_self_signed'] = !$this->getConfiguration()->getSslVerifyPeer();
 
         $request = array(
             'version'  => $this->getConfiguration()->getProtocolVersion(),

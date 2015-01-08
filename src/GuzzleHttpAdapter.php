@@ -124,6 +124,7 @@ class GuzzleHttpAdapter extends AbstractCurlHttpAdapter
                 'allow_redirects' => false,
                 'timeout'         => $this->getConfiguration()->getTimeout(),
                 'connect_timeout' => $this->getConfiguration()->getTimeout(),
+                'verify'          => $this->getConfiguration()->getSslVerifyPeer(),
             )
         );
 

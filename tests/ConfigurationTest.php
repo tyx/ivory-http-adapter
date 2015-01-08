@@ -58,6 +58,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(10, $this->configuration->getTimeout());
         $this->assertSame('Ivory Http Adapter '.HttpAdapterInterface::VERSION, $this->configuration->getUserAgent());
         $this->assertFalse($this->configuration->hasBaseUrl());
+        $this->assertTrue($this->configuration->getSslVerifyPeer());
     }
 
     public function testInitialState()
@@ -151,6 +152,13 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
     public function testSetInvalidBaseUrl()
     {
         $this->configuration->setBaseUrl('foo');
+    }
+
+    public function testSetSSLVerifyPeer()
+    {
+        $this->configuration->setSslVerifyPeer($verify = false);
+
+        $this->assertSame($verify, $this->configuration->getSslVerifyPeer());
     }
 
     /**

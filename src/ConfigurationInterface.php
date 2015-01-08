@@ -191,4 +191,20 @@ interface ConfigurationInterface
      * @return string The base url.
      */
     public function getBaseUrl();
+
+    /**
+     * Sets whether to check for a peer's certificate when performing an SSL request.
+     *
+     * @param boolean $verify Whether to check for a peer's certificate.
+     *
+     * @return void No return value.
+     */
+    public function setSslVerifyPeer($verify);
+
+    /**
+     * Returns whether to check for a peer's certificate when performing an SSL request.
+     *
+     * @return boolean
+     */
+    public function getSslVerifyPeer();
 }
