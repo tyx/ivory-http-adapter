@@ -55,10 +55,6 @@ abstract class AbstractHttpAdapterTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        if (!$this->getUrl()) {
-            $this->markTestSkipped();
-        }
-
         $this->httpAdapter = $this->createHttpAdapter();
     }
 
@@ -257,6 +253,22 @@ abstract class AbstractHttpAdapterTest extends \PHPUnit_Framework_TestCase
             $this->assertMultiResponses($e->getResponses(), $requests);
             $this->assertMultiExceptions($e->getExceptions(), $erroredRequests);
         }
+    }
+
+    public function testSendWithSelfSignedSslCertificate()
+    {
+        $this->httpAdapter->getConfiguration()->setSslVerifyPeer(false);
+
+        $this->assertResponse($this->httpAdapter->get($this->getSslUrl()));
+        $this->assertRequest(Request::METHOD_GET);
+    }
+
+    /**
+     * @expectedException \Ivory\HttpAdapter\HttpAdapterException
+     */
+    public function testSendWithInvalidSslCertificate()
+    {
+        $this->httpAdapter->get($this->getSslUrl());
     }
 
     public function testSendWithCustomArgSeparatorOutput()
@@ -665,11 +677,29 @@ abstract class AbstractHttpAdapterTest extends \PHPUnit_Framework_TestCase
      *
      * @param array $query The query.
      *
-     * @return string|null The url.
+     * @return string The url.
      */
     private function getUrl(array $query = array())
     {
-        return !empty($query) ? PHPUnitUtility::getUrl().'?'.http_build_query($query, null, '&') : PHPUnitUtility::getUrl();
+        if (($url = PHPUnitUtility::getUrl()) === false) {
+            $this->markTestSkipped();
+        }
+
+        return !empty($query) ? $url.'?'.http_build_query($query, null, '&') : $url;
+    }
+
+    /**
+     * Gets the ssl url.
+     *
+     * @return string The ssl url.
+     */
+    private function getSslUrl()
+    {
+        if (($sslUrl = PHPUnitUtility::getSslUrl()) === false) {
+            $this->markTestSkipped();
+        }
+
+        return $sslUrl;
     }
 
     /**
